@@ -1,4 +1,4 @@
-# dev - platform v5.2.0
+# dev - platform v5.3.0
 #
 # Every live environment is the same shape: a pinned module version and the
 # answers that belong to this environment. The `?ref=` is the whole point. It is
@@ -19,7 +19,7 @@ module "networking" {
 }
 
 module "platform" {
-  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.2.0"
+  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.3.0"
 
   name       = "dev"
   vpc_id     = module.networking.vpc_id

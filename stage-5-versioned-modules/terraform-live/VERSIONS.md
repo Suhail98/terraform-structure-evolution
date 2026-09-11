@@ -5,7 +5,7 @@ generation of the platform is this environment running?"
 
 | Environment | `kubernetes-platform` | `networking` | Role |
 | --- | --- | --- | --- |
-| `dev` | `v5.2.0` | `v3.2.0` | First adopter |
+| `dev` | `v5.3.0` | `v3.2.0` | First adopter |
 | `staging` | `v5.2.0` | `v3.2.0` | Pre-production validation |
 | `prod` | `v5.2.0` | `v3.2.0` | Internal production |
 | `customer-a` | `v5.2.0` | `v3.2.0` | Canary customer |
@@ -15,17 +15,18 @@ generation of the platform is this environment running?"
 
 | Release | Status |
 | --- | --- |
-| `v5.2.0` | Current |
-| `v5.1.0` | Supported |
+| `v5.3.0` | Current |
+| `v5.2.0` | Supported |
+| `v5.1.0` | Upgrade needed by the next quarterly window |
 | `< v5.1.0` | Unsupported |
 
-2 live generations is already a support matrix. The goal is controlled
+3 live generations is already a support matrix. The goal is controlled
 divergence, not permanent divergence — see [../../docs/upgrade-policy.md](../../docs/upgrade-policy.md).
 
 ## Promotion
 
 ```
-build v5.2.0 ──▶ test ──▶ release
+build v5.3.0 ──▶ test ──▶ release
                             │
                             ▼
                            dev ──▶ validate ──▶ staging ──▶ validate
