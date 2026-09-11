@@ -7,14 +7,15 @@ anything new.
 
 | | |
 | --- | --- |
-| Current release | `kubernetes-platform/v5.1.0` |
-| Source | `git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.1.0` |
+| Current release | `kubernetes-platform/v5.2.0` |
+| Supported | `kubernetes-platform/v5.1.0` |
+| Source | `git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.2.0` |
 
 ## Usage
 
 ```hcl
 module "platform" {
-  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.1.0"
+  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.2.0"
 
   name       = "dev"
   vpc_id     = module.networking.vpc_id
@@ -41,6 +42,7 @@ module "platform" {
 | `kubernetes_version` | `string` | `"1.31"` | Control plane version |
 | `node_groups` | `map(object)` | one `m7g.large` pool | Node groups keyed by name |
 | `log_retention_days` | `number` | `30` | Control plane log group retention |
+| `endpoint_public_access` | `bool` | `false` | Expose the API server to the internet |
 
 ## Outputs
 
@@ -54,6 +56,7 @@ terraform test
 ```
 
 The suite runs against `mock_provider`, so it needs no AWS credentials and
-creates nothing. It asserts the things a consumer is entitled to rely on: audit
-logging is on, the default node group has a floor of two, and a single-subnet
-input is rejected at plan rather than discovered at apply.
+creates nothing. It asserts the things a consumer is entitled to rely on: the
+API server is private by default, audit logging is on, the default node group has
+a floor of two, and a single-subnet input is rejected at plan rather than
+discovered at apply.

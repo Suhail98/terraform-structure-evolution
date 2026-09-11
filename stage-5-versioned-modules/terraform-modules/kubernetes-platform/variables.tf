@@ -54,3 +54,9 @@ variable "log_retention_days" {
   type        = number
   default     = 30
 }
+
+variable "endpoint_public_access" {
+  description = "Expose the Kubernetes API to the internet. Off by default: a consumer has to ask for it in writing, in the root module, where a reviewer sees it."
+  type        = bool
+  default     = false
+}

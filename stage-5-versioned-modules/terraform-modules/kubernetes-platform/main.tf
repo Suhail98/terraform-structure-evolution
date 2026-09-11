@@ -82,7 +82,7 @@ resource "aws_eks_cluster" "this" {
     subnet_ids              = var.subnet_ids
     security_group_ids      = [aws_security_group.cluster.id]
     endpoint_private_access = true
-    endpoint_public_access  = false
+    endpoint_public_access  = var.endpoint_public_access
   }
 
   access_config {

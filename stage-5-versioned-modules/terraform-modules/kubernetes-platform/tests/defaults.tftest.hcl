@@ -28,6 +28,11 @@ run "defaults_are_safe" {
   command = plan
 
   assert {
+    condition     = aws_eks_cluster.this.vpc_config[0].endpoint_public_access == false
+    error_message = "The API server must not be internet-facing unless a caller opts in."
+  }
+
+  assert {
     condition     = aws_eks_cluster.this.vpc_config[0].endpoint_private_access == true
     error_message = "Private endpoint access must be enabled."
   }
