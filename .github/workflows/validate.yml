@@ -19,7 +19,7 @@ jobs:
     name: terraform fmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.13.4
@@ -47,7 +47,7 @@ jobs:
           - stage-5-versioned-modules/terraform-modules/networking
           - stage-5-versioned-modules/terraform-modules/kubernetes-platform
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.13.4
@@ -64,7 +64,7 @@ jobs:
         module:
           - stage-5-versioned-modules/terraform-modules/kubernetes-platform
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.13.4
@@ -80,7 +80,7 @@ jobs:
       matrix:
         environment: [dev, staging, prod, customer-a, customer-b]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.13.4
@@ -94,7 +94,7 @@ jobs:
     name: version matrix is current
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Every pinned release appears in VERSIONS.md
         working-directory: stage-5-versioned-modules/terraform-live
         run: |
