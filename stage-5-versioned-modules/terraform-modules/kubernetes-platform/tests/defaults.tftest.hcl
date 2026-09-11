@@ -98,3 +98,32 @@ run "rejects_a_single_subnet" {
 
   expect_failures = [var.subnet_ids]
 }
+
+run "core_addons_are_managed" {
+  command = plan
+
+  assert {
+    condition     = length(aws_eks_addon.this) == 4
+    error_message = "vpc-cni, coredns, kube-proxy and eks-pod-identity-agent must all be managed by the module."
+  }
+
+  assert {
+    condition     = alltrue([for a in ["vpc-cni", "coredns", "kube-proxy", "eks-pod-identity-agent"] : contains(keys(aws_eks_addon.this), a)])
+    error_message = "Every addon in local.addons must be managed by name."
+  }
+}
+
+run "addon_versions_are_pinnable" {
+  command = plan
+
+  variables {
+    addon_versions = {
+      coredns = "v1.11.3-eksbuild.1"
+    }
+  }
+
+  assert {
+    condition     = aws_eks_addon.this["coredns"].addon_version == "v1.11.3-eksbuild.1"
+    error_message = "A pinned addon version must reach the addon."
+  }
+}

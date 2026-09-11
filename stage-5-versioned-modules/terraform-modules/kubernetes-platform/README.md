@@ -5,17 +5,21 @@ roles, the control plane security group, the control plane log group, and node
 groups as a map so a consumer can add a pool without this module learning
 anything new.
 
+Since v5.3.0 it also manages the core EKS addons — `vpc-cni`, `coredns`,
+`kube-proxy` and `eks-pod-identity-agent` — so they stop drifting in as
+hand-applied manifests nobody owns.
+
 | | |
 | --- | --- |
-| Current release | `kubernetes-platform/v5.2.0` |
-| Supported | `kubernetes-platform/v5.1.0` |
-| Source | `git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.2.0` |
+| Current release | `kubernetes-platform/v5.3.0` |
+| Supported | `kubernetes-platform/v5.2.0` |
+| Source | `git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.3.0` |
 
 ## Usage
 
 ```hcl
 module "platform" {
-  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.2.0"
+  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.3.0"
 
   name       = "dev"
   vpc_id     = module.networking.vpc_id
@@ -43,6 +47,7 @@ module "platform" {
 | `node_groups` | `map(object)` | one `m7g.large` pool | Node groups keyed by name |
 | `log_retention_days` | `number` | `30` | Control plane log group retention |
 | `endpoint_public_access` | `bool` | `false` | Expose the API server to the internet |
+| `addon_versions` | `map(string)` | `{}` | Version pins for the managed addons |
 
 ## Outputs
 
@@ -58,5 +63,5 @@ terraform test
 The suite runs against `mock_provider`, so it needs no AWS credentials and
 creates nothing. It asserts the things a consumer is entitled to rely on: the
 API server is private by default, audit logging is on, the default node group has
-a floor of two, and a single-subnet input is rejected at plan rather than
-discovered at apply.
+a floor of two, the core addons are managed and pinnable, and a single-subnet
+input is rejected at plan rather than discovered at apply.

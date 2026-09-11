@@ -117,3 +117,22 @@ resource "aws_eks_node_group" "this" {
 
   depends_on = [aws_iam_role_policy_attachment.node]
 }
+
+# v5.3.0: the addons every cluster ends up running anyway, managed here instead
+# of drifting in as hand-applied manifests nobody owns.
+locals {
+  addons = ["vpc-cni", "coredns", "kube-proxy", "eks-pod-identity-agent"]
+}
+
+resource "aws_eks_addon" "this" {
+  for_each = toset(local.addons)
+
+  cluster_name  = aws_eks_cluster.this.name
+  addon_name    = each.value
+  addon_version = lookup(var.addon_versions, each.value, null)
+
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "PRESERVE"
+
+  depends_on = [aws_eks_node_group.this]
+}

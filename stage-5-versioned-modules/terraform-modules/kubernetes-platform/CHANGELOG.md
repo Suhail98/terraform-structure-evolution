@@ -3,6 +3,16 @@
 Releases are tagged `kubernetes-platform/vX.Y.Z`. A live environment adopts a
 release by changing one `?ref=` and planning; nothing arrives on its own.
 
+## v5.3.0
+
+- Added managed addons (`vpc-cni`, `coredns`, `kube-proxy`, `eks-pod-identity-agent`)
+  and the `addon_versions` input for pinning them.
+- **No action required.** Clusters created before v5.3 already run these as
+  self-managed manifests; the first plan after upgrading adopts them. Review that
+  plan — it is not a no-op.
+- Promotion status: `dev` only. Staging and production remain on v5.2.0 until dev
+  has run it for a week.
+
 ## v5.2.0
 
 - Added `endpoint_public_access`, defaulting to `false`.

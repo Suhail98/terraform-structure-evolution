@@ -60,3 +60,14 @@ variable "endpoint_public_access" {
   type        = bool
   default     = false
 }
+
+variable "addon_versions" {
+  description = <<-EOT
+    Version pins for the managed addons, keyed by addon name. An unset addon
+    resolves to the default for the cluster's Kubernetes version, which means it
+    can move underneath you - pin anything you care about.
+  EOT
+
+  type    = map(string)
+  default = {}
+}
