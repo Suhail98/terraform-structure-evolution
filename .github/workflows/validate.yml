@@ -1,0 +1,113 @@
+# If modules are products, their pull requests get a build.
+#
+# Formatting and validation run over every root module and every reusable module;
+# the module test suite runs against mocked providers, so this needs no AWS
+# credentials and creates nothing.
+
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  fmt:
+    name: terraform fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.4
+          terraform_wrapper: false
+      - run: terraform fmt -check -recursive -diff
+
+  validate:
+    name: terraform validate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        directory:
+          - stage-1-single-root-module
+          - stage-2-organised-files
+          - stage-3-reusable-modules/modules/vpc
+          - stage-3-reusable-modules/modules/postgres
+          - stage-3-reusable-modules/environments/dev
+          - stage-3-reusable-modules/environments/prod
+          - stage-4-platform-modules/modules/networking
+          - stage-4-platform-modules/modules/kubernetes-platform
+          - stage-4-platform-modules/modules/postgres-platform
+          - stage-4-platform-modules/environments/dev
+          - stage-4-platform-modules/environments/prod
+          - stage-5-versioned-modules/terraform-modules/networking
+          - stage-5-versioned-modules/terraform-modules/kubernetes-platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.4
+          terraform_wrapper: false
+      - run: terraform -chdir=${{ matrix.directory }} init -backend=false -input=false
+      - run: terraform -chdir=${{ matrix.directory }} validate
+
+  test:
+    name: terraform test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - stage-5-versioned-modules/terraform-modules/kubernetes-platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.4
+          terraform_wrapper: false
+      - run: terraform -chdir=${{ matrix.module }} init -backend=false -input=false
+      - run: terraform -chdir=${{ matrix.module }} test
+
+  live:
+    name: pinned releases resolve
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [dev, staging, prod, customer-a, customer-b]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.4
+          terraform_wrapper: false
+      # Fetches each module at its pinned tag, so a ref that does not exist -
+      # or a tag someone moved - fails here rather than during a deploy.
+      - run: terraform -chdir=stage-5-versioned-modules/terraform-live/${{ matrix.environment }} init -backend=false -input=false
+      - run: terraform -chdir=stage-5-versioned-modules/terraform-live/${{ matrix.environment }} validate
+
+  versions:
+    name: version matrix is current
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every pinned release appears in VERSIONS.md
+        working-directory: stage-5-versioned-modules/terraform-live
+        run: |
+          status=0
+          for env in */; do
+            env="${env%/}"
+            [ -f "$env/main.tf" ] || continue
+            for pin in $(grep -o 'ref=[a-z-]*/v[0-9.]*' "$env/main.tf" | sed 's|ref=||'); do
+              version="${pin##*/}"
+              if ! grep -q "\`$version\`" VERSIONS.md; then
+                echo "::error file=stage-5-versioned-modules/terraform-live/$env/main.tf::$env pins $pin, which VERSIONS.md does not record"
+                status=1
+              fi
+            done
+          done
+          exit $status
