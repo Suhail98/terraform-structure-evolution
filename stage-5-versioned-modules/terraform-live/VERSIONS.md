@@ -6,9 +6,9 @@ generation of the platform is this environment running?"
 | Environment | `kubernetes-platform` | `networking` | Role |
 | --- | --- | --- | --- |
 | `dev` | `v5.2.0` | `v3.2.0` | First adopter |
-| `staging` | `v5.1.0` | `v3.2.0` | Pre-production validation |
-| `prod` | `v5.1.0` | `v3.2.0` | Internal production |
-| `customer-a` | `v5.1.0` | `v3.2.0` | Canary customer |
+| `staging` | `v5.2.0` | `v3.2.0` | Pre-production validation |
+| `prod` | `v5.2.0` | `v3.2.0` | Internal production |
+| `customer-a` | `v5.2.0` | `v3.2.0` | Canary customer |
 | `customer-b` | `v5.1.0` | `v3.2.0` | Quarterly upgrade window |
 
 ## Support policy

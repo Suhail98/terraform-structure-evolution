@@ -1,4 +1,4 @@
-# prod - platform v5.1.0
+# prod - platform v5.2.0
 #
 # Note what is absent: no `var.environment == "prod"` conditionals anywhere in
 # the module. Production differs from dev in its inputs and in its pinned
@@ -14,7 +14,7 @@ module "networking" {
 }
 
 module "platform" {
-  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.1.0"
+  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.2.0"
 
   name       = "prod"
   vpc_id     = module.networking.vpc_id

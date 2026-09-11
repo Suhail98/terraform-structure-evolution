@@ -1,4 +1,4 @@
-# staging - platform v5.1.0
+# staging - platform v5.2.0
 #
 # One release behind dev, deliberately. Staging is where v5.3.0 goes after dev
 # has held it, and the gap between these two files is the only record of what is
@@ -14,7 +14,7 @@ module "networking" {
 }
 
 module "platform" {
-  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.1.0"
+  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.2.0"
 
   name       = "staging"
   vpc_id     = module.networking.vpc_id

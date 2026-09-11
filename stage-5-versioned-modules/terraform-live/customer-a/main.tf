@@ -1,4 +1,4 @@
-# customer-a - platform v5.1.0, canary
+# customer-a - platform v5.2.0, canary
 #
 # The first customer to take a new platform release. A canary is only meaningful
 # if it is named somewhere: see ../VERSIONS.md.
@@ -13,7 +13,7 @@ module "networking" {
 }
 
 module "platform" {
-  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.1.0"
+  source = "git::https://github.com/Suhail98/terraform-structure-evolution.git//stage-5-versioned-modules/terraform-modules/kubernetes-platform?ref=kubernetes-platform/v5.2.0"
 
   name       = "customer-a"
   vpc_id     = module.networking.vpc_id
