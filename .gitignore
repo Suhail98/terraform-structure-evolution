@@ -1,0 +1,17 @@
+# Terraform working directories and state. Nothing here belongs in the repository.
+.terraform/
+.terraform.tfstate.lock.info
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Variable files often hold environment-specific values and occasionally secrets.
+# The lock file is the deliberate exception: commit .terraform.lock.hcl.
+*.tfvars
+*.tfvars.json
+!example.tfvars
+
+# Saved plans are artifacts, and a plan file can contain sensitive values.
+*.tfplan
+tfplan

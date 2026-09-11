@@ -1,0 +1,3 @@
+# Normalise to LF in the repository and on checkout. The CI workflow runs a
+# shell script on Linux, and Terraform heredocs are whitespace-sensitive.
+* text=auto eol=lf
